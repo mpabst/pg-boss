@@ -9,10 +9,16 @@ class Worker {
     this.config.fetch()
       .then(this.config.onFetch)
       .catch(this.config.onError)
-      .then(() => setTimeout(() => this.start.apply(this), this.config.interval));
+      .then(() => {
+        this.timer = setTimeout(
+          () => this.start.apply(this),
+          this.config.interval
+        );
+      });
   }
 
   stop() {
+    if (this.timer) clearTimeout(this.timer);
     this.stopped = true;
   }
 }
